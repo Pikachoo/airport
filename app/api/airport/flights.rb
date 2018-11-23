@@ -19,7 +19,7 @@ module Airport
         flight = Flight.create!(number: params[:number],
                                 capacity: params[:capacity],
                                 destination_airport_code: params[:destination_airport_code],
-                                departure_time: Time.parse(params[:departure_time]))
+                                departure_time: Time.zone.parse(params[:departure_time]))
 
         present flight, with: Airport::Entities::Flight
       end
@@ -31,7 +31,7 @@ module Airport
       end
       delete  do
         present Flight.find_by(number: params[:number],
-                               departure_time: Time.parse(params[:departure_time])).destroy
+                               departure_time: Time.zone.parse(params[:departure_time])).destroy
 
       end
 
@@ -48,7 +48,7 @@ module Airport
                                 departure_time: Time.parse(params[:departure_time]))
         update_params = {}
         update_params[:destination_airport_code] = params[:destination_airport_code] if params[:destination_airport_code]
-        update_params[:departure_time] = Time.parse(params[:new_departure_time]) if params[:new_departure_time]
+        update_params[:departure_time] = Time.zone.parse(params[:new_departure_time]) if params[:new_departure_time]
 
         flight.update(update_params)
         present flight, with:Airport::Entities::Flight
